@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+
+# .ppm files
+*.ppm
+
+# Folders
+/build/
+/cmake-build-debug/
+/.idea/
