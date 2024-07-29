@@ -16,4 +16,15 @@ add_executable(Raytracer main.cpp
         material/material.h
         material/lambertian.h
         material/metal.h
-        material/dielectric.h)
+        material/dielectric.h
+        geometry/aabb.h
+        hittable/bvh.h
+        texture/constant_medium.h
+        material/diffuse_light.h
+        material/isotropic.h
+        texture/perlin.h
+        geometry/quad.h
+        rtw_stb_image.h
+        external/stb_image.h
+        external/stb_image_write.h
+        texture/texture.h)
