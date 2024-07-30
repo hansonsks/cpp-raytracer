@@ -6,6 +6,7 @@
 #define RAYTRACER_LAMBERTIAN_H
 
 #include "material.h"
+#include "../texture/solid_colour.h"
 
 
 class lambertian : public material {
