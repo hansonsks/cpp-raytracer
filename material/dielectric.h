@@ -12,24 +12,25 @@ class dielectric : public material {
 public:
     dielectric(double refraction_index) : refraction_index(refraction_index) {}
 
-    bool scatter(const ray& r_in, const hit_record& rec, colour& attenuation, ray& scattered) const override {
-        attenuation = colour(1.0, 1.0, 1.0);
-        double ri = rec.front_face ? (1.0 / refraction_index) : refraction_index;
+    bool scatter(const ray& r_in, const hit_record& rec, scatter_record& srec) const override {
+        srec.attenuation = colour(1.0, 1.0, 1.0);
+        srec.pdf_ptr     = nullptr;
+        srec.skip_pdf    = true;
+        double ri        = rec.front_face ? (1.0/refraction_index) : refraction_index;
 
         vec3 unit_direction = unit_vector(r_in.direction());
         double cos_theta    = std::fmin(dot(-unit_direction, rec.normal), 1.0);
-        double sin_theta    = std::sqrt(1.0 - (cos_theta * cos_theta));
-
-        bool cannot_refract = ri * sin_theta > 1.0;
+        double sin_theta    = std::sqrt(1.0 - cos_theta*cos_theta);
 
         vec3 direction;
+        bool cannot_refract = ri * sin_theta > 1.0;
         if (cannot_refract || reflectance(cos_theta, ri) > random_double()) {
             direction = reflect(unit_direction, rec.normal);
         } else {
             direction = refract(unit_direction, rec.normal, ri);
         }
 
-        scattered = ray(rec.p, direction, r_in.time());
+        srec.skip_pdf_ray = ray(rec.p, direction, r_in.time());
         return true;
     }
 

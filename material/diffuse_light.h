@@ -13,7 +13,11 @@ public:
     diffuse_light(shared_ptr<texture> tex) : tex(tex) {}
     diffuse_light(const colour& emit) : tex(make_shared<solid_colour>(emit)) {}
 
-    colour emitted(double u, double v, const point3& p) const override {
+    colour emitted(const ray& r_in, const hit_record& rec, double u, double v, const point3& p)
+    const override {
+        if (!rec.front_face) {
+            return colour(0,0,0);
+        }
         return tex->value(u, v, p);
     }
 
