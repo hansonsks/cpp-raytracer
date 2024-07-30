@@ -5,6 +5,8 @@
 #ifndef RAYTRACER_CONSTANT_MEDIUM_H
 #define RAYTRACER_CONSTANT_MEDIUM_H
 
+#include <utility>
+
 #include "../utils/common.h"
 #include "../hittable/hittable.h"
 #include "../material/isotropic.h"
@@ -14,12 +16,12 @@
 class constant_medium : public hittable {
 public:
     constant_medium(shared_ptr<hittable> boundary, double density, shared_ptr<texture> tex)
-                    : boundary(boundary), neg_inv_density(-1/density),
+                    : boundary(std::move(boundary)), neg_inv_density(-1 / density),
                       phase_function(make_shared<isotropic>(tex))
     {}
 
     constant_medium(shared_ptr<hittable> boundary, double density, const colour& albedo)
-                    : boundary(boundary), neg_inv_density(-1/density),
+                    : boundary(std::move(boundary)), neg_inv_density(-1 / density),
                       phase_function(make_shared<isotropic>(albedo))
     {}
 
