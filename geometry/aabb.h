@@ -12,8 +12,7 @@ class aabb {
 public:
     interval x, y, z;
 
-    aabb() {} // The default AABB is empty, since intervals are empty by default
-
+    aabb() = default;
     aabb(const interval& x, const interval& y, const interval& z) : x(x), y(y), z(z) { pad_to_minimums(); }
 
     // Treat a and b as extrema for the bbox, so we don't require a specific min/max coordinate order
@@ -67,7 +66,6 @@ public:
 
     // Returns the index of the longest axis of the bounding box
     int longest_axis() const {
-
         if (x.size() > y.size()) {
             return x.size() > z.size() ? 0 : 2;
         } else {
@@ -95,9 +93,7 @@ aabb operator+(const aabb& bbox, const vec3& offset) {
     return {bbox.x + offset.x(), bbox.y + offset.y(), bbox.z + offset.z()};
 }
 
-aabb operator+(const vec3& offset, const aabb& bbox) {
-    return bbox + offset;
-}
+aabb operator+(const vec3& offset, const aabb& bbox) { return bbox + offset; }
 
 
 #endif //RAYTRACER_AABB_H

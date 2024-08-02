@@ -5,6 +5,7 @@
 #ifndef RAYTRACER_VEC3_H
 #define RAYTRACER_VEC3_H
 
+#include <string>
 
 class vec3 {
 public:
@@ -17,6 +18,10 @@ public:
     double y() const { return e[1]; }
     double z() const { return e[2]; }
 
+    void set_x(double x) { e[0] = x; }
+    void set_y(double y) { e[1] = y; }
+    void set_z(double z) { e[2] = z; }
+
     vec3 operator-() const { return {-e[0], -e[1], -e[2]}; }
     double operator[](int i) const { return e[i]; }
     double& operator[](int i) { return e[i]; }
@@ -25,6 +30,13 @@ public:
         e[0] += v.e[0];
         e[1] += v.e[1];
         e[2] += v.e[2];
+        return *this;
+    }
+
+    vec3& operator-=(const vec3& v) {
+        e[0] -= v.e[0];
+        e[1] -= v.e[1];
+        e[2] -= v.e[2];
         return *this;
     }
 
@@ -60,6 +72,10 @@ public:
     static vec3 random(double min, double max) {
         return {random_double(min,max), random_double(min,max), random_double(min,max)};
     }
+
+    std::string to_string() const {
+        return std::to_string(e[0]) + " " + std::to_string(e[1]) + " " + std::to_string(e[2]);
+    }
 };
 
 
@@ -80,6 +96,10 @@ inline vec3 operator*(const vec3& u, const vec3& v) {
 
 inline vec3 operator*(double t, const vec3& v) {
     return {t*v.e[0], t*v.e[1], t*v.e[2]};
+}
+
+inline vec3 operator+(const vec3& v, double t) {
+    return {v[0] + t, v[1] + t, v[2] + t};
 }
 
 inline vec3 operator*(const vec3& v, double t) {
@@ -146,6 +166,18 @@ inline vec3 refract(const vec3& uv, const vec3& n, double etai_over_etat) {
     vec3 r_out_perp =  etai_over_etat * (uv + cos_theta*n);
     vec3 r_out_parallel = -std::sqrt(std::fabs(1.0 - r_out_perp.length_squared())) * n;
     return r_out_perp + r_out_parallel;
+}
+
+inline vec3 random_cosine_direction() {
+    auto r1 = random_double();
+    auto r2 = random_double();
+
+    auto phi = 2*pi*r1;
+    auto x = std::cos(phi) * std::sqrt(r2);
+    auto y = std::sin(phi) * std::sqrt(r2);
+    auto z = std::sqrt(1-r2);
+
+    return {x, y, z};
 }
 
 #endif //RAYTRACER_VEC3_H
