@@ -27,4 +27,16 @@ add_executable(Raytracer main.cpp
         rtw_stb_image.h
         external/stb_image.h
         external/stb_image_write.h
-        texture/texture.h)
+        texture/texture.h
+        utils/pdf.h
+        utils/onb.h
+        texture/noise_texture.h
+        texture/image_texture.h
+        texture/checker_texture.h
+        texture/solid_colour.h
+        geometry/OBJ.h
+        geometry/mesh_3d_model.h
+        geometry/vec2.h
+        geometry/triangle.h
+        geometry/sphere.h
+)
